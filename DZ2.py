@@ -1,35 +1,37 @@
+#Задача 1,2
+'''
+with open('recipes.txt', 'rt') as file:
+    cookbook = {}
+    for line in file:
+        dish_name = line.strip()
+        ingredients_count = int(file.readline().strip())
+        recipe = []
+        for _ in range(ingredients_count):
+            ingredient_name, quantity, measure = file.readline().strip().split('|')
+            recipe.append({
+                'ingredient_name': ingredient_name,
+                'quantity': int(quantity),
+                'measure':  measure
 
-#Задание 1,2
-def read_file(file_path):
-    with open(file_path, 'r') as f:
-        return f.read()
+            })
+        file.readline()
+        cookbook[dish_name] = recipe
+def get_shop_list_by_dishes(dishes, person_count):
+    shop_list = {}
+    for dish in dishes:
+        for ingredient in cookbook[dish]:
+            new_shop_list_item = dict(ingredient)
+            new_shop_list_item['quantity'] *= person_count
+            if new_shop_list_item['ingredient_name'] not in shop_list:
+                shop_list[new_shop_list_item['ingredient_name']] = new_shop_list_item
+            else:
+                shop_list[new_shop_list_item['ingredient_name']]['quantity'] +=\
+                new_shop_list_item['quantity']
+    return shop_list
 
-
-def split_text(text):
-    return [i.splitlines() for i in text.split('\n\n')]
-
-
-def split_ingredients_data(lst):
-    return lst[:1] + [i.replace(' ', '').split('|') for i in lst[2:]]
-
-
-def lst_to_dict(lst):
-    return {lst[0]: [{'ingredient_name': i[0], 'quantity': int(i[1]), 'measure': i[2]} for i in lst[1:]]}
-
-
-def data_loads(file_path):
-    out = {}
-    text = read_file(file_path)
-    dish_list = split_text(text)
-    format_dish_list = [split_ingredients_data(i) for i in dish_list]
-    for i in format_dish_list:
-        out.update(lst_to_dict(i))
-    return out
-
-
-res = data_loads('recipes.txt')
-
-print(res)
+print(get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2))
+'''
+'''
 #Задание 3
 files = ['1.txt', '2.txt', '3.txt']
 file_info = [(filename, sum(1 for line in open(filename))) for filename in files]
@@ -44,3 +46,4 @@ with open('result.txt', 'w') as f:
         with open(filename) as input_file:
             f.writelines(input_file.readlines())
             f.write('\n')
+'''
